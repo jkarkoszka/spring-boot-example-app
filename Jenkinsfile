@@ -6,7 +6,7 @@ pipeline {
         imageName = "app/spring-boot-example"
         dockerRegistryCredential = "registry-ci-yourdomain-com-credentials"
         dockerRegistryUrl = "https://registry.ci.yourdomain.com"
-        kubernetesClusterCredential = "yourdomain-com-cluster-auth"
+        kubernetesClusterCredentials = "kubernetes-ci-yourdomain-com-credentials"
         kubernetesClusterUrl = "https://yourdomain-d37f-4850-9a5a-96e0b882b13a.k8s.ondigitalocean.com"
         kubernetesClusterNamespace = "production"
     }
@@ -46,7 +46,7 @@ pipeline {
             }
             steps {
                 script {
-                    withKubeConfig([credentialsId: kubernetesClusterCredential, namespace: kubernetesClusterNamespace, serverUrl: kubernetesClusterUrl]) {
+                    withKubeConfig([credentialsId: kubernetesClusterCredentials, namespace: kubernetesClusterNamespace, serverUrl: kubernetesClusterUrl]) {
                       sh 'sed s%SPRING_BOOT_EXAMPLE_VERSION%$GIT_COMMIT% deployment.yaml | kubectl apply -f - --record'
                     }
                 }
